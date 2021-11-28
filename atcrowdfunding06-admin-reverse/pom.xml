@@ -11,47 +11,59 @@
 
     <artifactId>atcrowdfunding06-admin-reverse</artifactId>
 
-    <!-- 依赖 MyBatis 核心包 -->
+    <properties>
+        <org.mapstruct.version>1.2.0.CR1</org.mapstruct.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
     <dependencies>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.2.8</version>
-        </dependency>
-    </dependencies>
-    <!-- 控制 Maven 在构建过程中相关配置 -->
-    <build>
-    <!-- 构建过程中用到的插件 -->
-    <plugins>
-    <!-- 具体插件，逆向工程的操作是以构建过程中插件形式出现的 -->
-    <plugin>
-    <groupId>org.mybatis.generator</groupId>
-    <artifactId>mybatis-generator-maven-plugin</artifactId>
-    <version>1.3.0</version>
-    <!-- 插件的依赖 -->
-    <dependencies>
-    <!-- 逆向工程的核心依赖 -->
-    <dependency>
-        <groupId>org.mybatis.generator</groupId>
-        <artifactId>mybatis-generator-core</artifactId>
-        <version>1.3.2</version>
-    </dependency>
-    <!-- 数据库连接池 -->
-    <dependency>
-        <groupId>com.mchange</groupId>
-        <artifactId>c3p0</artifactId>
-        <version>0.9.2</version>
-    </dependency>
-        <!-- MySQL 驱动 -->
+<!--        mybatis-generator-maven-plugin逆向生成文件需要这个jar包-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.8</version>
+            <version>5.1.46</version>
         </dependency>
     </dependencies>
-    </plugin>
-    </plugins>
+
+    <build>
+        <resources>
+<!--            默认情况下maven只打包src/main/resource下的资源-->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>*/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <!--mybatis_generator配置文件位置-->
+                <configuration>
+                    <configurationFile>src/main/resources/mybatis_generator_config.xml</configurationFile>
+                    <verbose>true</verbose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+        </plugins>
     </build>
-
-
 </project>
